@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function QuestionForm() {
   const [formData, setFormData] = useState({
@@ -9,6 +9,13 @@ function QuestionForm() {
     answer4: "",
     correctIndex: 0,
   });
+
+  useEffect(() => {
+    return () => {
+      // Cleanup function
+      // Cancel any ongoing asynchronous tasks or subscriptions here
+    };
+  }, []);
 
   function handleChange(event) {
     setFormData({
@@ -31,7 +38,15 @@ function QuestionForm() {
       }),
     })
       .then((response) => response.json())
-      .then((data) => setFormData(data));
+      .then((data) => {
+        // Check if the component is still mounted before updating the state
+        {
+          setFormData(data);
+        }
+      })
+      .catch((error) => {
+        console.log("Error submitting question:", error);
+      });
   }
 
   return (

@@ -8,7 +8,16 @@ function QuestionList() {
       .then((resp) => resp.json())
       .then((data) => setQuestions(data));
   }, []);
-  const updatedQuestions = questions.map((question) => <QuestionItem key={question.id} question={question} />);
+  const updatedQuestions = questions.map((question) => (
+    <QuestionItem key={question.id} question={question} onDeleteItem={handleDeleteItem} />
+  ));
+
+  function handleDeleteItem(deletedQuestion) {
+    setQuestions((prevQuestions) => {
+      const afterDeleteQuestions = prevQuestions.filter((question) => question.id !== deletedQuestion.id);
+      return afterDeleteQuestions;
+    });
+  }
 
   return (
     <section>
